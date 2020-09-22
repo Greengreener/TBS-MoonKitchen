@@ -5,38 +5,49 @@ using UnityEngine;
 public class UnitInformation : MonoBehaviour
 {
     #region Variables
+    
+    public float Health { get; set; }
     [Header("ID's")]
     public int _shipType;
-    public string team;
+    public string _team;
     [Header("Health")]
-    static float _smallHealth = 2;
-    static float _mediumHealth = 5;
-    static float _bigHealth = 10;
-    float _maxHealth;
-    float _health;
+    static float _SmallHealth = 2;
+    static float _MediumHealth = 5;
+    static float _BigHealth = 10;
+    float maxHealth;
+    float health;
     #endregion
     void Start()
     {
-        if (team != null && _shipType < 0)
+        if (_team != null && _shipType > 0)
         {
             //Sets unit health based on ship type
             switch (_shipType)
             {
                 case 1:
-                    _maxHealth = _smallHealth;
+                    maxHealth = _SmallHealth;
                     break;
                 case 2:
-                    _maxHealth = _mediumHealth;
+                    maxHealth = _MediumHealth;
                     break;
                 case 3:
-                    _maxHealth = _bigHealth;
+                    maxHealth = _BigHealth;
                     break;
             }
-            _health = _maxHealth;
+            health = maxHealth;
         }
-        if (_health == 0)
+        if (health == 0)
         {
-            Debug.LogError(_health);
+            Debug.LogError(health);
         }
+        Health = health;
+    }
+    private void Update()
+    {
+        UpdateHealth();
+    }
+    void UpdateHealth()
+    {
+        health = Health;
     }
 }
