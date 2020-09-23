@@ -11,11 +11,15 @@ public class UnitInformation : MonoBehaviour
     public int _shipType;
     public string _team;
     [Header("Health")]
-    static float _SmallHealth = 2;
+    static float _SmallHealth = 3;
     static float _MediumHealth = 5;
     static float _BigHealth = 10;
     float maxHealth;
-    float health;
+    public float health;
+    [Header("Selection")]
+    MeshRenderer meshRenderer;
+    public Material baseMat;
+    public Material selectedMat;
     #endregion
     void Start()
     {
@@ -41,13 +45,30 @@ public class UnitInformation : MonoBehaviour
             Debug.LogError(health);
         }
         Health = health;
+        meshRenderer = GetComponent<MeshRenderer>();
     }
     private void Update()
     {
         UpdateHealth();
+        DeathCheck();
     }
     void UpdateHealth()
     {
         health = Health;
+    }
+    public void SelectUnit()
+    {
+        meshRenderer.material = selectedMat;
+    }
+    public void DeselectUnit()
+    {
+        meshRenderer.material = baseMat;
+    }
+    void DeathCheck()
+    {
+        if (health <= 0)
+        {
+            gameObject.SetActive(false);
+        }
     }
 }
