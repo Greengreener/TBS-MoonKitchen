@@ -46,6 +46,23 @@ public class UnitInformation : MonoBehaviour
         }
         Health = health;
         meshRenderer = GetComponent<MeshRenderer>();
+        MeshMatColorChange();
+    }
+    void MeshMatColorChange()
+    {
+#if UNITY_EDITOR
+
+        switch (_team)
+        {
+            case "Red":
+                meshRenderer.material.color = Color.red;
+                break;
+            case "Blue":
+                meshRenderer.material.color = Color.blue;
+                break;
+
+        }
+#endif
     }
     private void Update()
     {
@@ -63,6 +80,7 @@ public class UnitInformation : MonoBehaviour
     public void DeselectUnit()
     {
         meshRenderer.material = baseMat;
+        MeshMatColorChange();
     }
     void DeathCheck()
     {

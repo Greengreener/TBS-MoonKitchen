@@ -21,6 +21,7 @@ public class Fighting : MonoBehaviour
     [Header("Interacting")]
     bool canShoot;
     UnitInformation targetInfo;
+    Vector3 cameraDirection = new Vector3(-0.5f, -0.7f, 0.5f);
     public Transform _cameraDirection;
     Transform cameraPos;
     float damage = 1;
@@ -67,15 +68,13 @@ public class Fighting : MonoBehaviour
         if (Input.GetMouseButtonDown(0) && targetingReady == true)
         {
             RaycastHit hit;
-            var camDirectionPosition = _cameraDirection.transform.position;
-            var camPosition = cameraPos.transform.position;
-            var rayDirection = (camDirectionPosition - camPosition) * 100f;
-            var mouseWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            Debug.DrawRay(mouseWorldPoint, rayDirection, Color.black, 10);
-            if (Physics.Raycast(mouseWorldPoint, rayDirection, out hit, 1000) && canShoot)
+            var camPosition = cameraPos.transform.position;
+            var mouseWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Debug.DrawRay(mouseWorldPoint, cameraDirection, Color.black, 10);
+            if (Physics.Raycast(mouseWorldPoint, cameraDirection, out hit, 1000) && canShoot)
             {
-                Debug.DrawRay(mouseWorldPoint, rayDirection, Color.white, 10);
+                Debug.DrawRay(mouseWorldPoint, cameraDirection, Color.white, 10);
                 targetInfo = hit.transform.GetComponent<UnitInformation>();
                 
                 if (targetInfo.transform.position != this.transform.position && targetInfo._team != unitInfo._team)
