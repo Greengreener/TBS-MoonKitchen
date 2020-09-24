@@ -10,14 +10,15 @@ public class Fighting : MonoBehaviour
     SelectingUnits selectingUnits;
     UnitInformation unitInfo;
     bool targetingReady;
+
     [Header("Range")]
-    
     static float smallRange = 2;
     static float mediumRange = 5;
     static float bigRange = 10;
     float unitRange;
     Collider[] enemyInRange;
     public GameObject _rangeIndicator;
+
     [Header("Interacting")]
     bool canShoot;
     UnitInformation targetInfo;
@@ -25,8 +26,13 @@ public class Fighting : MonoBehaviour
     public Transform _cameraDirection;
     Transform cameraPos;
     float damage = 1;
-    
     Collider selfCollider;
+
+    [Header("Damage")]
+    int effectiveDamage = 3;
+    int averageDamage = 2;
+    int weakDamage = 1;
+
     [Header("UI")]
     public Button startRange;
     public Button fireButton;
@@ -76,7 +82,7 @@ public class Fighting : MonoBehaviour
             {
                 Debug.DrawRay(mouseWorldPoint, cameraDirection, Color.white, 10);
                 targetInfo = hit.transform.GetComponent<UnitInformation>();
-                
+
                 if (targetInfo.transform.position != this.transform.position && targetInfo._team != unitInfo._team)
                 {
                     targetInfo.SelectUnit();
@@ -105,14 +111,62 @@ public class Fighting : MonoBehaviour
             if (enemyInRange != null)
             {
                 canShoot = true;
-                
+
             }
-        else { canShoot = false; }
+            else { canShoot = false; }
     }
     public void FireMaLazer()
     {
-        targetInfo.Health = targetInfo.Health - damage;
+        DamageTargetUnit(unitInfo._shipType);
         ResetTargeting();
+    }
+    void DamageTargetUnit(int UnitTypeID)
+    {
+        switch (UnitTypeID)
+        {
+            case 1:
+                switch (targetInfo._shipType)
+                {
+                    case 1:
+                        targetInfo.Health -= averageDamage;
+                        break;
+                    case 2:
+                        targetInfo.Health -= weakDamage;
+                        break;
+                    case 3:
+                        targetInfo.Health -= effectiveDamage;
+                        break;
+                }
+                break;
+            case 2:
+                switch (targetInfo._shipType)
+                {
+                    case 1:
+                        targetInfo.Health -= effectiveDamage;
+                        break;
+                    case 2:
+                        targetInfo.Health -= averageDamage;
+                        break;
+                    case 3:
+                        targetInfo.Health -= weakDamage;
+                        break;
+                }
+                break;
+            case 3:
+                switch (targetInfo._shipType)
+                {
+                    case 1:
+                        targetInfo.Health -= weakDamage;
+                        break;
+                    case 2:
+                        targetInfo.Health -= effectiveDamage;
+                        break;
+                    case 3:
+                        targetInfo.Health -= averageDamage;
+                        break;
+                }
+                break;
+        }
     }
     public void ResetTargeting()
     {
@@ -128,7 +182,7 @@ public class Fighting : MonoBehaviour
         }
         _rangeIndicator.SetActive(false);
         TurnUi(false);
-        fireButton.gameObject.SetActive(false);        
+        fireButton.gameObject.SetActive(false);
         selectingUnits.ResetSelecting();
     }
 }
