@@ -32,12 +32,13 @@ public class SelectingUnits : MonoBehaviour
                 if (launchUnit != null)
                 {
                     launchUnit.StartTargeting();
+                    canSelect = false;
                 }
                 else
                 {
-                    Debug.LogError($"There is no 'Fighting' Component attached to '{hit.transform.name}'");
+                    //Debug.LogError($"There is no 'Fighting' Component attached to '{hit.transform.name}'");
                 }
-                canSelect = false;
+                
                 return;
             }
         }

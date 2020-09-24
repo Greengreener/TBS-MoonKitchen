@@ -6,10 +6,12 @@ using UnityEngine.UI;
 public class Fighting : MonoBehaviour
 {
     #region Variables
+    GameObject selectingMaster;
+    SelectingUnits selectingUnits;
     UnitInformation unitInfo;
     bool targetingReady;
     [Header("Range")]
-    public Button startRange;
+    
     static float smallRange = 2;
     static float mediumRange = 5;
     static float bigRange = 10;
@@ -17,15 +19,22 @@ public class Fighting : MonoBehaviour
     Collider[] enemyInRange;
     public GameObject _rangeIndicator;
     [Header("Interacting")]
-    public bool canShoot;
-    public UnitInformation targetInfo;
+    bool canShoot;
+    UnitInformation targetInfo;
     public Transform _cameraDirection;
     Transform cameraPos;
     float damage = 1;
+    
+    Collider selfCollider;
+    [Header("UI")]
+    public Button startRange;
     public Button fireButton;
+    public Button cancelButton;
     #endregion
     void Start()
     {
+        selectingMaster = GameObject.FindGameObjectWithTag("SelectingMaster");
+        selectingUnits = selectingMaster.GetComponent<SelectingUnits>();
         unitInfo = GetComponent<UnitInformation>();
         switch (unitInfo._shipType)
         {
@@ -39,13 +48,19 @@ public class Fighting : MonoBehaviour
                 unitRange = bigRange;
                 break;
         }
+        TurnUi(false);
         cameraPos = Camera.main.transform;
-        startRange.gameObject.SetActive(false);
+        selfCollider = GetComponent<Collider>();
     }
     public void StartTargeting()
     {
-        startRange.gameObject.SetActive(true);
+        TurnUi(true);
         targetingReady = true;
+    }
+    void TurnUi(bool input)
+    {
+        startRange.gameObject.SetActive(input);
+        cancelButton.gameObject.SetActive(input);
     }
     private void Update()
     {
@@ -58,36 +73,41 @@ public class Fighting : MonoBehaviour
             var mouseWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
             Debug.DrawRay(mouseWorldPoint, rayDirection, Color.black, 10);
-            if (Physics.Raycast(mouseWorldPoint, rayDirection, out hit, 1000)&&canShoot)
+            if (Physics.Raycast(mouseWorldPoint, rayDirection, out hit, 1000) && canShoot)
             {
                 Debug.DrawRay(mouseWorldPoint, rayDirection, Color.white, 10);
                 targetInfo = hit.transform.GetComponent<UnitInformation>();
-                Debug.Log("targetHealth = " + targetInfo.Health + " || targetType = " + targetInfo._shipType + " || targetTeam = " + targetInfo._team);
-                targetInfo.SelectUnit();
-                fireButton.gameObject.SetActive(true);
+                
+                if (targetInfo.transform.position != this.transform.position && targetInfo._team != unitInfo._team)
+                {
+                    targetInfo.SelectUnit();
+                    startRange.gameObject.SetActive(false);
+                    fireButton.gameObject.SetActive(true);
+                }
             }
         }
     }
     public void GetEnemiesInRange()
     {
+        selfCollider.enabled = false;
         _rangeIndicator.SetActive(true);
         _rangeIndicator.transform.localScale = new Vector3(unitRange * 2, 0.01f, unitRange * 2);
         _rangeIndicator.transform.localPosition = new Vector3(0, -0.5f, 0);
         enemyInRange = Physics.OverlapSphere(gameObject.transform.position, unitRange);
         #region DrawingLines
-        Debug.DrawLine(gameObject.transform.position, gameObject.transform.position + new Vector3(unitRange, 0, 0), Color.red, 100);
+        /*Debug.DrawLine(gameObject.transform.position, gameObject.transform.position + new Vector3(unitRange, 0, 0), Color.red, 100);
         Debug.DrawLine(gameObject.transform.position, gameObject.transform.position + new Vector3(0, unitRange, 0), Color.green, 100);
         Debug.DrawLine(gameObject.transform.position, gameObject.transform.position + new Vector3(0, 0, unitRange), Color.blue, 100);
         Debug.DrawLine(gameObject.transform.position, gameObject.transform.position + new Vector3(-unitRange, 0, 0), Color.red, 100);
         Debug.DrawLine(gameObject.transform.position, gameObject.transform.position + new Vector3(0, -unitRange, 0), Color.green, 100);
-        Debug.DrawLine(gameObject.transform.position, gameObject.transform.position + new Vector3(0, 0, -unitRange), Color.blue, 100);
+        Debug.DrawLine(gameObject.transform.position, gameObject.transform.position + new Vector3(0, 0, -unitRange), Color.blue, 100);*/
         #endregion
         for (int i = 0; i < enemyInRange.Length; i++)
-        {
-            Debug.Log("Collider " + i + " pos = " + enemyInRange[i].gameObject.transform.position);
-        }
-        if (enemyInRange != null)
-        { canShoot = true; }
+            if (enemyInRange != null)
+            {
+                canShoot = true;
+                
+            }
         else { canShoot = false; }
     }
     public void FireMaLazer()
@@ -95,14 +115,21 @@ public class Fighting : MonoBehaviour
         targetInfo.Health = targetInfo.Health - damage;
         ResetTargeting();
     }
-    void ResetTargeting()
+    public void ResetTargeting()
     {
+        Fighting fighting = GetComponent<Fighting>();
+        selfCollider.enabled = true;
         targetingReady = false;
+        canShoot = false;
         enemyInRange = null;
-        targetInfo.DeselectUnit();
-        targetInfo = null;
+        if (targetInfo != null)
+        {
+            targetInfo.DeselectUnit();
+            targetInfo = null;
+        }
         _rangeIndicator.SetActive(false);
-        fireButton.gameObject.SetActive(false);
-        startRange.gameObject.SetActive(false);
+        TurnUi(false);
+        fireButton.gameObject.SetActive(false);        
+        selectingUnits.ResetSelecting();
     }
 }
