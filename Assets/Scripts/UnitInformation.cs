@@ -23,6 +23,7 @@ public class UnitInformation : MonoBehaviour
     public Material selectedMat;
     [Header("UI")]
     public Text healthText;
+    [Header("")]
     #endregion
     void Start()
     {
@@ -34,6 +35,7 @@ public class UnitInformation : MonoBehaviour
             {
                 case 1:
                     maxHealth = _SmallHealth;
+                    GameObject smallMeshHolder = GameObject.FindGameObjectWithTag("SmallMeshHolder");
                     break;
                 case 2:
                     maxHealth = _MediumHealth;
