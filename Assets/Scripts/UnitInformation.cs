@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UnitInformation : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class UnitInformation : MonoBehaviour
     MeshRenderer meshRenderer;
     public Material baseMat;
     public Material selectedMat;
+    [Header("UI")]
+    public Text healthText;
     #endregion
     void Start()
     {
@@ -72,6 +75,7 @@ public class UnitInformation : MonoBehaviour
     void UpdateHealth()
     {
         health = Health;
+        healthText.text = health.ToString();
     }
     public void SelectUnit()
     {
