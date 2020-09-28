@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SelectingMaster
   - TurnController
+  - SmallMeshHolder
   layers:
   - Default
   - TransparentFX
