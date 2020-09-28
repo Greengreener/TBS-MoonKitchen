@@ -4,19 +4,24 @@ using UnityEngine;
 
 public class SelectingUnits : MonoBehaviour
 {
-    public Fighting launchUnit;
+    #region Variables
+    TurnController turnController;
+    UnitInformation unitInfo;
+    Fighting launchUnit;
     public Transform _cameraDirection;
     Transform cameraPos;
     bool canSelect;
-    
+    #endregion
+
     private void Start()
     {
+        turnController = FindObjectOfType<TurnController>();
         canSelect = true;
         cameraPos = Camera.main.transform;
     }
     void Update()
     {
-        if (Input.GetMouseButtonDown(0)&&canSelect)
+        if (Input.GetMouseButtonDown(0) && canSelect)
         {
             RaycastHit hit;
             var camDirectionPosition = _cameraDirection.transform.position;
@@ -28,17 +33,31 @@ public class SelectingUnits : MonoBehaviour
             if (Physics.Raycast(mouseWorldPoint, rayDirection, out hit, 1000))
             {
                 Debug.DrawRay(mouseWorldPoint, rayDirection, Color.white, 10);
+                unitInfo = hit.transform.GetComponent<UnitInformation>();
                 launchUnit = hit.transform.GetComponent<Fighting>();
-                if (launchUnit != null)
+                if (unitInfo._team == "Blue" && turnController.Turn == 0 && launchUnit.hasGone == false)
                 {
-                    launchUnit.StartTargeting();
-                    canSelect = false;
+                    if (launchUnit != null)
+                    {
+                        launchUnit.StartTargeting();
+                        canSelect = false;
+                    }
+                    else { return; }
+                }
+                if (unitInfo._team == "Red" && turnController.Turn == 1 && launchUnit.hasGone == false)
+                {
+                    if (launchUnit != null)
+                    {
+                        launchUnit.StartTargeting();
+                        canSelect = false;
+                    }
+                    else { return; }
                 }
                 else
                 {
                     //Debug.LogError($"There is no 'Fighting' Component attached to '{hit.transform.name}'");
                 }
-                
+
                 return;
             }
         }

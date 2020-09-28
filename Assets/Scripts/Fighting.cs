@@ -6,15 +6,16 @@ using UnityEngine.UI;
 public class Fighting : MonoBehaviour
 {
     #region Variables
+    TurnController turnController;
     GameObject selectingMaster;
     SelectingUnits selectingUnits;
     UnitInformation unitInfo;
     bool targetingReady;
 
     [Header("Range")]
-    static float smallRange = 2;
-    static float mediumRange = 5;
-    static float bigRange = 10;
+    static float smallRange = 4;
+    static float mediumRange = 6;
+    static float bigRange = 8;
     float unitRange;
     Collider[] enemyInRange;
     public GameObject _rangeIndicator;
@@ -27,9 +28,10 @@ public class Fighting : MonoBehaviour
     Transform cameraPos;
     float damage = 1;
     Collider selfCollider;
+    public bool hasGone;
 
     [Header("Damage")]
-    int effectiveDamage = 3;
+    int effectiveDamage = 4;
     int averageDamage = 2;
     int weakDamage = 1;
 
@@ -40,6 +42,8 @@ public class Fighting : MonoBehaviour
     #endregion
     void Start()
     {
+        hasGone = false;
+        turnController = FindObjectOfType<TurnController>();
         selectingMaster = GameObject.FindGameObjectWithTag("SelectingMaster");
         selectingUnits = selectingMaster.GetComponent<SelectingUnits>();
         unitInfo = GetComponent<UnitInformation>();
@@ -81,12 +85,16 @@ public class Fighting : MonoBehaviour
             if (Physics.Raycast(mouseWorldPoint, cameraDirection, out hit, 1000) && canShoot)
             {
                 Debug.DrawRay(mouseWorldPoint, cameraDirection, Color.white, 10);
+                if (targetInfo != null)
+                {
+                    targetInfo.DeselectUnit();
+                    targetInfo = null;
+                }
                 targetInfo = hit.transform.GetComponent<UnitInformation>();
-
                 if (targetInfo.transform.position != this.transform.position && targetInfo._team != unitInfo._team)
                 {
                     targetInfo.SelectUnit();
-                    startRange.gameObject.SetActive(false);
+                    
                     fireButton.gameObject.SetActive(true);
                 }
             }
@@ -114,11 +122,15 @@ public class Fighting : MonoBehaviour
 
             }
             else { canShoot = false; }
+        startRange.gameObject.SetActive(false);
     }
     public void FireMaLazer()
     {
         DamageTargetUnit(unitInfo._shipType);
-        ResetTargeting();
+        hasGone = true;
+        FinishFiring();
+        //turnController.ChangeTurn();
+        //ResetTargeting();
     }
     void DamageTargetUnit(int UnitTypeID)
     {
@@ -168,6 +180,19 @@ public class Fighting : MonoBehaviour
                 break;
         }
     }
+    void FinishFiring()
+    {
+        _rangeIndicator.SetActive(false);
+        TurnUi(false);
+        fireButton.gameObject.SetActive(false);
+        if (targetInfo != null)
+        {
+            targetInfo.DeselectUnit();
+            targetInfo = null; 
+        }
+        canShoot = false;
+        selectingUnits.ResetSelecting();
+    }
     public void ResetTargeting()
     {
         Fighting fighting = GetComponent<Fighting>();
@@ -175,14 +200,8 @@ public class Fighting : MonoBehaviour
         targetingReady = false;
         canShoot = false;
         enemyInRange = null;
-        if (targetInfo != null)
-        {
-            targetInfo.DeselectUnit();
-            targetInfo = null;
-        }
-        _rangeIndicator.SetActive(false);
-        TurnUi(false);
-        fireButton.gameObject.SetActive(false);
+        FinishFiring();
+        hasGone = false;
         selectingUnits.ResetSelecting();
     }
 }

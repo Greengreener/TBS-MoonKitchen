@@ -6,8 +6,8 @@ using UnityEngine.UI;
 public class UnitInformation : MonoBehaviour
 {
     #region Variables
-    
     public float Health { get; set; }
+    public Fighting fighting;
     [Header("ID's")]
     public int _shipType;
     public string _team;
@@ -26,6 +26,7 @@ public class UnitInformation : MonoBehaviour
     #endregion
     void Start()
     {
+        fighting = GetComponent<Fighting>();
         if (_team != null && _shipType > 0)
         {
             //Sets unit health based on ship type
