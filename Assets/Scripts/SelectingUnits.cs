@@ -40,6 +40,7 @@ public class SelectingUnits : MonoBehaviour
                     if (launchUnit != null)
                     {
                         launchUnit.StartTargeting();
+                        unitInfo.healthText.gameObject.SetActive(true);
                         canSelect = false;
                     }
                     else { return; }
@@ -49,6 +50,7 @@ public class SelectingUnits : MonoBehaviour
                     if (launchUnit != null)
                     {
                         launchUnit.StartTargeting();
+                        unitInfo.healthText.gameObject.SetActive(true);
                         canSelect = false;
                     }
                     else { return; }
