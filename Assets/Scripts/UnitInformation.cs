@@ -120,7 +120,7 @@ public class UnitInformation : MonoBehaviour
         healthText.text = health.ToString();
         if (_shipType == 1)
         {
-            int healthInt = Mathf.RoundToInt(health);            
+            int healthInt = Mathf.RoundToInt(health);
             for (int i = 0; i < _smallShipsMeshes.Length; i++)
             {
                 _smallShipsMeshes[i].SetActive(false);
@@ -155,7 +155,7 @@ public class UnitInformation : MonoBehaviour
         MeshMatColorChange();
     }
     void DeathCheck()
-    {        
+    {
         if (health <= 0)
         {
             gameObject.SetActive(false);
