@@ -6,10 +6,19 @@ using UnityEngine.UI;
 public class TurnController : MonoBehaviour
 {
     public int Turn { get; set; }
+    Color red = Color.red;
+    Color blue = Color.blue;
+    Color white = Color.white;
+    Color alphaDecrease = new Color(0, 0, 0, 10);
+    Color alphaIncrease = new Color(0, 0, 0, 255);
     public Text _turnDisplay;
     public Image _displayPanel;
-    public UnitInformation[] units;
-   
+    UnitInformation[] units;
+    public Image _attackingUnitHealthPanel;
+    public Image _selectedUnitHealthPanel;
+    public Text _attackingUnitHealthText;
+    public Text _selectedUnitHealthText;
+
     void Start()
     {
         Turn = Random.Range(0, 2);
@@ -18,13 +27,13 @@ public class TurnController : MonoBehaviour
         {
             case 0:
                 _turnDisplay.text = "The turn is Blue";
-                _turnDisplay.color = Color.white;
-                _displayPanel.color = Color.blue + new Color(0, 0, 0, -10);
+                _turnDisplay.color = white;
+                _displayPanel.color = blue + alphaDecrease;
                 break;
             case 1:
                 _turnDisplay.text = "The turn is Red";
-                _turnDisplay.color = Color.white;
-                _displayPanel.color = Color.red + new Color(0,0,0,-10);
+                _turnDisplay.color = white;
+                _displayPanel.color = red + alphaDecrease;
                 break;
         }
         units = FindObjectsOfType<UnitInformation>();
@@ -35,13 +44,13 @@ public class TurnController : MonoBehaviour
         {
             case 0:
                 _turnDisplay.text = "The turn is Blue";
-                _turnDisplay.color = Color.white;
-                _displayPanel.color = Color.blue + new Color(0, 0, 0, 10);
+                _turnDisplay.color = white;
+                _displayPanel.color = blue + alphaDecrease;
                 break;
             case 1:
                 _turnDisplay.text = "The turn is Red";
-                _turnDisplay.color = Color.white;
-                _displayPanel.color = Color.red + new Color(0, 0, 0, 10);
+                _turnDisplay.color = white;
+                _displayPanel.color = red + alphaDecrease;
                 break;
         }
     }
@@ -57,5 +66,44 @@ public class TurnController : MonoBehaviour
         {
             units[i].fighting.ResetTargeting();
         }
+        _attackingUnitHealthPanel.color = white+ alphaIncrease;
+        _attackingUnitHealthText.text = "";
+    }
+    public void StartShowHealth(UnitInformation attackingUnit)
+    {
+        switch (attackingUnit._team)
+        {
+            case "Blue":
+                _attackingUnitHealthPanel.color = blue;
+                break;
+            case "Red":
+                _attackingUnitHealthPanel.color = red;                
+                break;
+        }
+        _attackingUnitHealthText.text = attackingUnit.health.ToString();
+    }    
+    public void selectedShowHealth(UnitInformation selectedUnit)
+    {
+        switch (selectedUnit._team)
+        {
+            case "Blue":
+                _selectedUnitHealthPanel.color = blue;
+                break;
+            case "Red":
+                _selectedUnitHealthPanel.color = red;
+                break;
+        }
+        _selectedUnitHealthText.text = selectedUnit.Health.ToString();
+    }
+    public void UpdateSelectedHealth(UnitInformation selectedUnit)
+    {
+        _selectedUnitHealthText.text = selectedUnit.Health.ToString();
+    }
+    public void ResetShowHealth()
+    {
+        _attackingUnitHealthText.text = "";
+        _attackingUnitHealthPanel.color = white + alphaIncrease;
+        _selectedUnitHealthText.text = "";
+        _selectedUnitHealthPanel.color = white + alphaIncrease;
     }
 }

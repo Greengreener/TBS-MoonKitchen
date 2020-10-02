@@ -10,18 +10,17 @@ public class SelectingUnits : MonoBehaviour
     Fighting launchUnit;
     public Transform _cameraDirection;
     Transform cameraPos;
-    bool canSelect;
+    bool alreadyOpen;
     #endregion
 
     private void Start()
     {
         turnController = FindObjectOfType<TurnController>();
-        canSelect = true;
         cameraPos = Camera.main.transform;
     }
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && canSelect)
+        if (Input.GetMouseButtonDown(0) )
         {
             RaycastHit hit;
             var camDirectionPosition = _cameraDirection.transform.position;
@@ -35,25 +34,35 @@ public class SelectingUnits : MonoBehaviour
                 Debug.DrawRay(mouseWorldPoint, rayDirection, Color.white, 10);
                 unitInfo = hit.transform.GetComponent<UnitInformation>();
                 launchUnit = hit.transform.GetComponent<Fighting>();
+                
                 if (unitInfo._team == "Blue" && turnController.Turn == 0 && launchUnit.hasGone == false)
                 {
-                    if (launchUnit != null)
+                    if (!alreadyOpen)
                     {
-                        launchUnit.StartTargeting();
-                        unitInfo.healthText.gameObject.SetActive(true);
-                        canSelect = false;
+                        turnController.StartShowHealth(unitInfo);
+                        if (launchUnit != null)
+                        {
+                            launchUnit.StartTargeting();
+                            unitInfo.healthText.gameObject.SetActive(true);
+                        }
                     }
-                    else { return; }
+                    else 
+                    {
+                        ResetSelecting(hit);
+                    }
                 }
                 if (unitInfo._team == "Red" && turnController.Turn == 1 && launchUnit.hasGone == false)
                 {
+                    turnController.StartShowHealth(unitInfo);
                     if (launchUnit != null)
                     {
                         launchUnit.StartTargeting();
                         unitInfo.healthText.gameObject.SetActive(true);
-                        canSelect = false;
                     }
-                    else { return; }
+                    else 
+                    { 
+                        ResetSelecting(hit);
+                    }
                 }
                 else
                 {
@@ -64,8 +73,19 @@ public class SelectingUnits : MonoBehaviour
             }
         }
     }
-    public void ResetSelecting()
+    public void ResetSelecting(RaycastHit raycastHit)
     {
-        canSelect = true;
+        unitInfo = raycastHit.transform.GetComponent<UnitInformation>();
+        launchUnit = raycastHit.transform.GetComponent<Fighting>();
+        turnController.StartShowHealth(unitInfo);
+        if (launchUnit != null)
+        {
+            launchUnit.StartTargeting();
+            unitInfo.healthText.gameObject.SetActive(true);
+        }
+    }
+    public void EndTargetingAndStuff()
+    {
+        alreadyOpen = false;
     }
 }

@@ -96,6 +96,7 @@ public class Fighting : MonoBehaviour
                 if (targetInfo.transform.position != this.transform.position && targetInfo._team != unitInfo._team)
                 {
                     targetInfo.SelectUnit();
+                    turnController.selectedShowHealth(targetInfo);
                     targetInfo.healthText.gameObject.SetActive(true);
                     fireButton.gameObject.SetActive(true);
                 }
@@ -106,8 +107,8 @@ public class Fighting : MonoBehaviour
     {
         selfCollider.enabled = false;
         _rangeIndicator.SetActive(true);
-        _rangeIndicator.transform.localScale = new Vector3(unitRange*2 , 0.01f, unitRange*2 );        
-        enemyInRange = Physics.OverlapSphere(gameObject.transform.position, unitRange);        
+        _rangeIndicator.transform.localScale = new Vector3(unitRange * 2, 0.01f, unitRange * 2);
+        enemyInRange = Physics.OverlapSphere(gameObject.transform.position, unitRange);
         for (int i = 0; i < enemyInRange.Length; i++)
             if (enemyInRange != null)
             {
@@ -120,6 +121,7 @@ public class Fighting : MonoBehaviour
     {
         DamageTargetUnit(unitInfo._shipType);
         hasGone = true;
+        turnController.UpdateSelectedHealth(targetInfo);
         FinishFiring();
     }
     void DamageTargetUnit(int UnitTypeID)
@@ -174,8 +176,6 @@ public class Fighting : MonoBehaviour
     {
         unitInfo.healthText.gameObject.SetActive(false);
         _rangeIndicator.SetActive(false);
-        TurnUi(false);
-        targetInfo.healthText.gameObject.SetActive(false);
         fireButton.gameObject.SetActive(false);
         if (targetInfo != null)
         {
@@ -183,13 +183,13 @@ public class Fighting : MonoBehaviour
             targetInfo.DeselectUnit();
             targetInfo = null;
         }
+        TurnUi(false);
         canShoot = false;
-        selectingUnits.ResetSelecting();
     }
     public void ResetTargeting()
     {
+        turnController.ResetShowHealth();
         unitInfo.healthText.gameObject.SetActive(false);
-        
         Fighting fighting = GetComponent<Fighting>();
         selfCollider.enabled = true;
         targetingReady = false;
@@ -197,6 +197,5 @@ public class Fighting : MonoBehaviour
         enemyInRange = null;
         FinishFiring();
         hasGone = false;
-        selectingUnits.ResetSelecting();
-    }
+    } 
 }
