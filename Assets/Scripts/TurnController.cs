@@ -93,11 +93,15 @@ public class TurnController : MonoBehaviour
                 _selectedUnitHealthPanel.color = red;
                 break;
         }
-        _selectedUnitHealthText.text = selectedUnit.Health.ToString();
+        _selectedUnitHealthText.text = selectedUnit.health.ToString();        
     }
     public void UpdateSelectedHealth(UnitInformation selectedUnit)
     {
         _selectedUnitHealthText.text = selectedUnit.Health.ToString();
+        if (selectedUnit.Health <= 0)
+        {
+            _selectedUnitHealthText.text = "Dead";
+        }
     }
     public void ResetShowHealth()
     {
