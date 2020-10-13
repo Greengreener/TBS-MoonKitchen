@@ -22,8 +22,6 @@ public class UnitInformation : MonoBehaviour
     MeshFilter meshFilter;
     public Material baseMat;
     public Material selectedMat;
-    [Header("UI")]
-    public Text healthText;
     [Header("Meshes")]
     public GameObject smallMeshHolder;
     public Mesh _smallShip;
@@ -34,43 +32,11 @@ public class UnitInformation : MonoBehaviour
     #endregion
     void Start()
     {
-#if UNITY_EDITOR
-        //healthText.gameObject.SetActive(true);
-#endif
         fighting = GetComponent<Fighting>();
         meshFilter = GetComponent<MeshFilter>();
         if (_team != null && _shipType > 0)
         {
-            //Sets unit health based on ship type
-            switch (_shipType)
-            {
-                case 1:
-                    maxHealth = _SmallHealth;
-                    meshFilter.mesh = null;
-                    smallMeshHolder.SetActive(true);
-                    for (int i = 0; i < _smallShipsMeshes.Length; i++)
-                    {
-                        switch (_team)
-                        {
-                            case "Red":
-                                _smallShipsMeshes[i].GetComponent<MeshRenderer>().material.color = Color.red;
-                                break;
-                            case "Blue":
-                                _smallShipsMeshes[i].GetComponent<MeshRenderer>().material.color = Color.blue;
-                                break;
-                        }
-                    }
-                    //meshFilter.mesh = _smallShip;
-                    break;
-                case 2:
-                    maxHealth = _MediumHealth;
-                    meshFilter.mesh = _mediumShip;
-                    break;
-                case 3:
-                    maxHealth = _BigHealth;
-                    meshFilter.mesh = _bigShip;
-                    break;
-            }
+            SetBasedOnShipType(_shipType);
             health = maxHealth;
         }
         if (health == 0)
@@ -80,6 +46,39 @@ public class UnitInformation : MonoBehaviour
         Health = health;
         meshRenderer = GetComponent<MeshRenderer>();
         MeshMatColorChange();
+    }
+    void SetBasedOnShipType(int type)
+    {
+        //Sets unit health based on ship type
+        switch (_shipType)
+        {
+            case 1:
+                maxHealth = _SmallHealth;
+                meshFilter.mesh = null;
+                smallMeshHolder.SetActive(true);
+                for (int i = 0; i < _smallShipsMeshes.Length; i++)
+                {
+                    switch (_team)
+                    {
+                        case "Red":
+                            _smallShipsMeshes[i].GetComponent<MeshRenderer>().material.color = Color.red;
+                            break;
+                        case "Blue":
+                            _smallShipsMeshes[i].GetComponent<MeshRenderer>().material.color = Color.blue;
+                            break;
+                    }
+                }
+                //meshFilter.mesh = _smallShip;
+                break;
+            case 2:
+                maxHealth = _MediumHealth;
+                meshFilter.mesh = _mediumShip;
+                break;
+            case 3:
+                maxHealth = _BigHealth;
+                meshFilter.mesh = _bigShip;
+                break;
+        }
     }
     void MeshMatColorChange()
     {
@@ -109,7 +108,7 @@ public class UnitInformation : MonoBehaviour
         }
 #endif
     }
-    private void Update()
+    void Update()
     {
         UpdateHealth();
         DeathCheck();
@@ -117,7 +116,6 @@ public class UnitInformation : MonoBehaviour
     void UpdateHealth()
     {
         health = Health;
-        healthText.text = health.ToString();
         if (_shipType == 1)
         {
             int healthInt = Mathf.RoundToInt(health);

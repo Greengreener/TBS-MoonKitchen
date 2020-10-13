@@ -10,6 +10,7 @@ public class Fighting : MonoBehaviour
     GameObject selectingMaster;
     SelectingUnits selectingUnits;
     UnitInformation unitInfo;
+    UnitCanvasHolder unitCanvasHolder;
     bool targetingReady;
 
     [Header("Range")]
@@ -30,15 +31,16 @@ public class Fighting : MonoBehaviour
     Collider selfCollider;
     public bool hasGone;
 
+    //!
+    //?
+    //todo
+    //*
+    //
+
     [Header("Damage")]
     int effectiveDamage = 4;
     int averageDamage = 2;
     int weakDamage = 1;
-
-    [Header("UI")]
-    public Button startRange;
-    public Button fireButton;
-    public Button cancelButton;
     #endregion
     void Start()
     {
@@ -59,19 +61,13 @@ public class Fighting : MonoBehaviour
                 unitRange = bigRange;
                 break;
         }
-        TurnUi(false);
         cameraPos = Camera.main.transform;
         selfCollider = GetComponent<Collider>();
+        unitCanvasHolder = GameObject.FindGameObjectWithTag("UnitCanvas").GetComponent<UnitCanvasHolder>();
     }
     public void StartTargeting()
     {
-        TurnUi(true);
         targetingReady = true;
-    }
-    void TurnUi(bool input)
-    {
-        startRange.gameObject.SetActive(input);
-        cancelButton.gameObject.SetActive(input);
     }
     private void Update()
     {
@@ -84,11 +80,9 @@ public class Fighting : MonoBehaviour
             Debug.DrawRay(mouseWorldPoint, cameraDirection, Color.black, 10);
             if (Physics.Raycast(mouseWorldPoint, cameraDirection, out hit, 1000) && canShoot)
             {
-                unitInfo.healthText.gameObject.SetActive(true);
                 Debug.DrawRay(mouseWorldPoint, cameraDirection, Color.white, 10);
                 if (targetInfo != null)
                 {
-                    targetInfo.healthText.gameObject.SetActive(false);
                     targetInfo.DeselectUnit();
                     targetInfo = null;
                 }
@@ -97,8 +91,6 @@ public class Fighting : MonoBehaviour
                 {
                     targetInfo.SelectUnit();
                     turnController.selectedShowHealth(targetInfo);
-                    targetInfo.healthText.gameObject.SetActive(true);
-                    fireButton.gameObject.SetActive(true);
                 }
             }
         }
@@ -115,7 +107,7 @@ public class Fighting : MonoBehaviour
                 canShoot = true;
             }
             else { canShoot = false; }
-        startRange.gameObject.SetActive(false);
+
     }
     public void FireMaLazer()
     {
@@ -174,22 +166,17 @@ public class Fighting : MonoBehaviour
     }
     void FinishFiring()
     {
-        unitInfo.healthText.gameObject.SetActive(false);
         _rangeIndicator.SetActive(false);
-        fireButton.gameObject.SetActive(false);
         if (targetInfo != null)
         {
-            targetInfo.healthText.gameObject.SetActive(false);
             targetInfo.DeselectUnit();
             targetInfo = null;
         }
-        TurnUi(false);
         canShoot = false;
     }
     public void ResetTargeting()
     {
         turnController.ResetShowHealth();
-        unitInfo.healthText.gameObject.SetActive(false);
         Fighting fighting = GetComponent<Fighting>();
         selfCollider.enabled = true;
         targetingReady = false;
@@ -197,5 +184,5 @@ public class Fighting : MonoBehaviour
         enemyInRange = null;
         FinishFiring();
         hasGone = false;
-    } 
+    }
 }

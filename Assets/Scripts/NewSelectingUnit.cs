@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class SelectingUnits : MonoBehaviour
+public class NewSelectingUnit : MonoBehaviour
 {
     #region Variables
     TurnController turnController;
@@ -11,12 +12,17 @@ public class SelectingUnits : MonoBehaviour
     public Transform _cameraDirection;
     Transform cameraPos;
     bool alreadyOpen;
+    [Header("Unit Canvas")]
+    GameObject unitCanvas;
+    UnitCanvasHolder unitCanvasScript;
     #endregion
 
     private void Start()
     {
         turnController = FindObjectOfType<TurnController>();
         cameraPos = Camera.main.transform;
+        unitCanvas = GameObject.FindGameObjectWithTag("UnitCanvas");
+        unitCanvasScript = unitCanvas.GetComponent<UnitCanvasHolder>();
     }
     void Update()
     {
@@ -28,12 +34,12 @@ public class SelectingUnits : MonoBehaviour
             var rayDirection = (camDirectionPosition - camPosition) * 100f;
             var mouseWorldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 
-            Debug.DrawRay(mouseWorldPoint, rayDirection, Color.black, 10);
             if (Physics.Raycast(mouseWorldPoint, rayDirection, out hit, 1000))
             {
                 Debug.DrawRay(mouseWorldPoint, rayDirection, Color.white, 10);
                 unitInfo = hit.transform.GetComponent<UnitInformation>();
                 launchUnit = hit.transform.GetComponent<Fighting>();
+                unitCanvasScript.SetUnitInfo(unitInfo, launchUnit);
 
                 if (unitInfo._team == "Blue" && turnController.Turn == 0 && launchUnit.hasGone == false)
                 {
@@ -42,6 +48,7 @@ public class SelectingUnits : MonoBehaviour
                         turnController.StartShowHealth(unitInfo);
                         if (launchUnit != null)
                         {
+                            LocateAndSetCanvas(launchUnit);
                             launchUnit.StartTargeting();
                         }
                     }
@@ -55,6 +62,7 @@ public class SelectingUnits : MonoBehaviour
                     turnController.StartShowHealth(unitInfo);
                     if (launchUnit != null)
                     {
+                        LocateAndSetCanvas(launchUnit);
                         launchUnit.StartTargeting();
                     }
                     else
@@ -62,11 +70,6 @@ public class SelectingUnits : MonoBehaviour
                         ResetSelecting(hit);
                     }
                 }
-                else
-                {
-                    //Debug.LogError($"There is no 'Fighting' Component attached to '{hit.transform.name}'");
-                }
-                return;
             }
         }
     }
@@ -80,12 +83,8 @@ public class SelectingUnits : MonoBehaviour
             launchUnit.StartTargeting();
         }
     }
-    public void EndTargetingAndStuff()
+    void LocateAndSetCanvas(Fighting launchUnit)
     {
-        alreadyOpen = false;
-    }
-    void alreadyOpenChange(bool toChangeTo)
-    {
-        alreadyOpen = toChangeTo;
+        unitCanvas.transform.position = launchUnit.transform.position;
     }
 }

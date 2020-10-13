@@ -7,6 +7,7 @@ TagManager:
   - SelectingMaster
   - TurnController
   - SmallMeshHolder
+  - UnitCanvas
   layers:
   - Default
   - TransparentFX

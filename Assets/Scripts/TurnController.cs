@@ -23,24 +23,16 @@ public class TurnController : MonoBehaviour
     {
         Turn = Random.Range(0, 2);
         print(Turn);
-        switch (Turn)
-        {
-            case 0:
-                _turnDisplay.text = "The turn is Blue";
-                _turnDisplay.color = white;
-                _displayPanel.color = blue + alphaDecrease;
-                break;
-            case 1:
-                _turnDisplay.text = "The turn is Red";
-                _turnDisplay.color = white;
-                _displayPanel.color = red + alphaDecrease;
-                break;
-        }
+        ChangeUiBasedOnTurn(Turn);
         units = FindObjectsOfType<UnitInformation>();
     }
     private void Update()
     {
-        switch (Turn)
+        ChangeUiBasedOnTurn(Turn);
+    }
+    void ChangeUiBasedOnTurn(int turnInput)
+    {
+        switch (turnInput)
         {
             case 0:
                 _turnDisplay.text = "The turn is Blue";
@@ -54,6 +46,7 @@ public class TurnController : MonoBehaviour
                 break;
         }
     }
+
     public void ChangeTurn()
     {
         Turn++;
@@ -66,7 +59,7 @@ public class TurnController : MonoBehaviour
         {
             units[i].fighting.ResetTargeting();
         }
-        _attackingUnitHealthPanel.color = white+ alphaIncrease;
+        _attackingUnitHealthPanel.color = white + alphaIncrease;
         _attackingUnitHealthText.text = "";
     }
     public void StartShowHealth(UnitInformation attackingUnit)
@@ -77,11 +70,11 @@ public class TurnController : MonoBehaviour
                 _attackingUnitHealthPanel.color = blue;
                 break;
             case "Red":
-                _attackingUnitHealthPanel.color = red;                
+                _attackingUnitHealthPanel.color = red;
                 break;
         }
         _attackingUnitHealthText.text = attackingUnit.health.ToString();
-    }    
+    }
     public void selectedShowHealth(UnitInformation selectedUnit)
     {
         switch (selectedUnit._team)
@@ -93,7 +86,7 @@ public class TurnController : MonoBehaviour
                 _selectedUnitHealthPanel.color = red;
                 break;
         }
-        _selectedUnitHealthText.text = selectedUnit.health.ToString();        
+        _selectedUnitHealthText.text = selectedUnit.health.ToString();
     }
     public void UpdateSelectedHealth(UnitInformation selectedUnit)
     {
