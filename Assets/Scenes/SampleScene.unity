@@ -479,6 +479,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77e3e61c50309ea46b9edff10a4c1e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _aimButton: {fileID: 1995179064}
+  _fireButton: {fileID: 462892261}
+  _cancelButton: {fileID: 1322599402}
 --- !u!1 &323259365
 GameObject:
   m_ObjectHideFlags: 0
@@ -1598,7 +1601,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 268063598}
-        m_MethodName: CancelInvoke
+        m_MethodName: CancelButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
