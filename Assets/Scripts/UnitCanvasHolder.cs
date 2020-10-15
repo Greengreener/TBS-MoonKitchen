@@ -22,6 +22,7 @@ public class UnitCanvasHolder : MonoBehaviour
     public void AimButton()
     {
         unitFighting.GetEnemiesInRange();
+        AimButtonActive(false);
     }
     public void FireButton()
     {

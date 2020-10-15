@@ -3,14 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Fighting : MonoBehaviour
+public class Fighting : WorldWorker
 {
     #region Variables
-    TurnController turnController;
-    GameObject selectingMaster;
-    SelectingUnits selectingUnits;
     UnitInformation unitInfo;
-    UnitCanvasHolder unitCanvasHolder;
     bool targetingReady;
 
     [Header("Range")]
@@ -45,9 +41,7 @@ public class Fighting : MonoBehaviour
     void Start()
     {
         hasGone = false;
-        turnController = FindObjectOfType<TurnController>();
-        selectingMaster = GameObject.FindGameObjectWithTag("SelectingMaster");
-        selectingUnits = selectingMaster.GetComponent<SelectingUnits>();
+
         unitInfo = GetComponent<UnitInformation>();
         switch (unitInfo._shipType)
         {
@@ -106,7 +100,7 @@ public class Fighting : MonoBehaviour
             {
                 canShoot = true;
             }
-            else { canShoot = false; }
+        else { canShoot = false; }
 
     }
     public void FireMaLazer()

@@ -3,12 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class NewSelectingUnit : MonoBehaviour
+public class NewSelectingUnit : WorldWorker
 {
     #region Variables
-    TurnController turnController;
-    UnitInformation unitInfo;
-    Fighting launchUnit;
     public Transform _cameraDirection;
     Transform cameraPos;
     bool alreadyOpen;

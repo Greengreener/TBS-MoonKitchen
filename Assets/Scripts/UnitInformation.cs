@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnitInformation : MonoBehaviour
+public class UnitInformation : WorldWorker
 {
     #region Variables
     public float Health { get; set; }
