@@ -20,7 +20,9 @@ public class NewSelectingUnit : WorldWorker
         unitCanvasHolder = GameObject.FindGameObjectWithTag("UnitCanvas").GetComponent<UnitCanvasHolder>();
         selectingMaster = GameObject.FindGameObjectWithTag("SelectingMaster");
         selectingUnits = selectingMaster.GetComponent<NewSelectingUnit>();
+        mainCamera = Camera.main;
         #endregion
+
         cameraPos = Camera.main.transform;
     }
     void Update()

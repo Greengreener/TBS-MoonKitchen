@@ -8,6 +8,7 @@ public class WorldWorker : MonoBehaviour
     protected UnitCanvasHolder unitCanvasHolder;
     protected GameObject selectingMaster;
     protected NewSelectingUnit selectingUnits;
+    protected Camera mainCamera;
 
     void Start()
     {
@@ -16,6 +17,7 @@ public class WorldWorker : MonoBehaviour
         unitCanvasHolder = GameObject.FindGameObjectWithTag("UnitCanvas").GetComponent<UnitCanvasHolder>();
         selectingMaster = GameObject.FindGameObjectWithTag("SelectingMaster");
         selectingUnits = selectingMaster.GetComponent<NewSelectingUnit>();
+        mainCamera = Camera.main;
         #endregion
     }
 }

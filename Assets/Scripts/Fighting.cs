@@ -62,6 +62,7 @@ public class Fighting : WorldWorker
         }
         cameraPos = Camera.main.transform;
         selfCollider = GetComponent<Collider>();
+        mainCamera = Camera.main;
     }
     public void StartTargeting()
     {
@@ -99,6 +100,11 @@ public class Fighting : WorldWorker
         selfCollider.enabled = false;
         _rangeIndicator.SetActive(true);
         _rangeIndicator.transform.localScale = new Vector3(unitRange * 2, 0.01f, unitRange * 2);
+        _rangeIndicator.transform.position = this.transform.position + ((cameraDirection * 10) - cameraDirection);
+        var thisRotation = this.transform.rotation;
+        var cameraRotation = mainCamera.transform.rotation;
+        //print(_rangeIndicator.transform.rotation);
+        _rangeIndicator.transform.rotation = new Quaternion(-0.4f, -0.4f, -0.1f, 0.9f);
         enemyInRange = Physics.OverlapSphere(gameObject.transform.position, unitRange);
         for (int i = 0; i < enemyInRange.Length; i++)
             if (enemyInRange != null)

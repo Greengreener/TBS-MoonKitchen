@@ -37,6 +37,7 @@ public class UnitInformation : WorldWorker
         unitCanvasHolder = GameObject.FindGameObjectWithTag("UnitCanvas").GetComponent<UnitCanvasHolder>();
         selectingMaster = GameObject.FindGameObjectWithTag("SelectingMaster");
         selectingUnits = selectingMaster.GetComponent<NewSelectingUnit>();
+        mainCamera = Camera.main;
         #endregion
         fighting = GetComponent<Fighting>();
         meshFilter = GetComponent<MeshFilter>();
