@@ -20,4 +20,14 @@ public class WorldWorker : MonoBehaviour
         mainCamera = Camera.main;
         #endregion
     }
+    #region CheeseRegion
+    bool cheese;
+    private void Cheese()
+    {
+        if (cheese == true)
+        {
+            print("CHEESE");
+        }
+    }
+    #endregion
 }
