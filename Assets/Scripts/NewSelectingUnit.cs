@@ -9,17 +9,19 @@ public class NewSelectingUnit : WorldWorker
     public Transform _cameraDirection;
     Transform cameraPos;
     bool alreadyOpen;
-    [Header("Unit Canvas")]
-    GameObject unitCanvas;
-    UnitCanvasHolder unitCanvasScript;
+    UnitInformation unitInfo;
+    Fighting launchUnit;
     #endregion
 
     private void Start()
     {
+        #region SetSpecial
         turnController = FindObjectOfType<TurnController>();
+        unitCanvasHolder = GameObject.FindGameObjectWithTag("UnitCanvas").GetComponent<UnitCanvasHolder>();
+        selectingMaster = GameObject.FindGameObjectWithTag("SelectingMaster");
+        selectingUnits = selectingMaster.GetComponent<NewSelectingUnit>();
+        #endregion
         cameraPos = Camera.main.transform;
-        unitCanvas = GameObject.FindGameObjectWithTag("UnitCanvas");
-        unitCanvasScript = unitCanvas.GetComponent<UnitCanvasHolder>();
     }
     void Update()
     {
@@ -36,7 +38,7 @@ public class NewSelectingUnit : WorldWorker
                 Debug.DrawRay(mouseWorldPoint, rayDirection, Color.white, 10);
                 unitInfo = hit.transform.GetComponent<UnitInformation>();
                 launchUnit = hit.transform.GetComponent<Fighting>();
-                unitCanvasScript.SetUnitInfo(unitInfo, launchUnit);
+
 
                 if (unitInfo._team == "Blue" && turnController.Turn == 0 && launchUnit.hasGone == false)
                 {
@@ -45,6 +47,8 @@ public class NewSelectingUnit : WorldWorker
                         turnController.StartShowHealth(unitInfo);
                         if (launchUnit != null)
                         {
+                            unitCanvasHolder.UnitCanvasButtonActive(true, false);
+                            unitCanvasHolder.SetUnitInfo(unitInfo, launchUnit);
                             LocateAndSetCanvas(launchUnit);
                             launchUnit.StartTargeting();
                         }
@@ -59,6 +63,8 @@ public class NewSelectingUnit : WorldWorker
                     turnController.StartShowHealth(unitInfo);
                     if (launchUnit != null)
                     {
+                        unitCanvasHolder.UnitCanvasButtonActive(true, false);
+                        unitCanvasHolder.SetUnitInfo(unitInfo, launchUnit);
                         LocateAndSetCanvas(launchUnit);
                         launchUnit.StartTargeting();
                     }
@@ -82,6 +88,6 @@ public class NewSelectingUnit : WorldWorker
     }
     void LocateAndSetCanvas(Fighting launchUnit)
     {
-        unitCanvas.transform.position = launchUnit.transform.position;
+        unitCanvasHolder.gameObject.transform.position = launchUnit.transform.position;
     }
 }

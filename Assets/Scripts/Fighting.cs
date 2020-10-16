@@ -40,8 +40,13 @@ public class Fighting : WorldWorker
     #endregion
     void Start()
     {
+        #region SetSpecial
+        turnController = FindObjectOfType<TurnController>();
+        unitCanvasHolder = GameObject.FindGameObjectWithTag("UnitCanvas").GetComponent<UnitCanvasHolder>();
+        selectingMaster = GameObject.FindGameObjectWithTag("SelectingMaster");
+        selectingUnits = selectingMaster.GetComponent<NewSelectingUnit>();
+        #endregion
         hasGone = false;
-
         unitInfo = GetComponent<UnitInformation>();
         switch (unitInfo._shipType)
         {
@@ -57,7 +62,6 @@ public class Fighting : WorldWorker
         }
         cameraPos = Camera.main.transform;
         selfCollider = GetComponent<Collider>();
-        unitCanvasHolder = GameObject.FindGameObjectWithTag("UnitCanvas").GetComponent<UnitCanvasHolder>();
     }
     public void StartTargeting()
     {
@@ -85,6 +89,7 @@ public class Fighting : WorldWorker
                 {
                     targetInfo.SelectUnit();
                     turnController.selectedShowHealth(targetInfo);
+                    unitCanvasHolder.FireButtonActive(true);
                 }
             }
         }
@@ -100,8 +105,7 @@ public class Fighting : WorldWorker
             {
                 canShoot = true;
             }
-        else { canShoot = false; }
-
+            else { canShoot = false; }
     }
     public void FireMaLazer()
     {

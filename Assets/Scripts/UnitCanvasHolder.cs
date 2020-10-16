@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class UnitCanvasHolder : MonoBehaviour
 {
-    UnitInformation unitInfo;
-    Fighting unitFighting;
+    public UnitInformation unitInfo;
+    public Fighting unitFighting;
     public GameObject _aimButton;
     public GameObject _fireButton;
     public GameObject _cancelButton;
@@ -27,9 +27,12 @@ public class UnitCanvasHolder : MonoBehaviour
     public void FireButton()
     {
         unitFighting.FireMaLazer();
+        UnitCanvasButtonActive(false, false);
+
     }
     public void CancelButton()
     {
+        UnitCanvasButtonActive(false, false);
         unitFighting.ResetTargeting();
     }
     #region ButtonActivation
@@ -41,10 +44,10 @@ public class UnitCanvasHolder : MonoBehaviour
     {
         _fireButton.gameObject.SetActive(setActive);
     }
-    public void UnitCanvasButtonActive(bool setActive)
+    public void UnitCanvasButtonActive(bool setActive, bool fireButtonActivity)
     {
         _aimButton.SetActive(setActive);
-        _fireButton.SetActive(setActive);
+        _fireButton.SetActive(fireButtonActivity);
         _cancelButton.SetActive(setActive);
     }
     #endregion

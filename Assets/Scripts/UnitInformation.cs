@@ -32,6 +32,12 @@ public class UnitInformation : WorldWorker
     #endregion
     void Start()
     {
+        #region SetSpecial
+        turnController = FindObjectOfType<TurnController>();
+        unitCanvasHolder = GameObject.FindGameObjectWithTag("UnitCanvas").GetComponent<UnitCanvasHolder>();
+        selectingMaster = GameObject.FindGameObjectWithTag("SelectingMaster");
+        selectingUnits = selectingMaster.GetComponent<NewSelectingUnit>();
+        #endregion
         fighting = GetComponent<Fighting>();
         meshFilter = GetComponent<MeshFilter>();
         if (_team != null && _shipType > 0)
