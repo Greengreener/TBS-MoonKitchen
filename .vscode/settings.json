@@ -22,7 +22,7 @@
     "synthwave84.brightness": 0,
     //*Misc
     "editor.detectIndentation": true,
-    "editor.codeLens": false,
+    "editor.codeLens": true,
     "files.exclude": {
         "**/.DS_Store": true,
         "**/.git": true,

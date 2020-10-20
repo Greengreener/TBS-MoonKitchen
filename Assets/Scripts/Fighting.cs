@@ -14,12 +14,12 @@ public class Fighting : WorldWorker
     static float mediumRange = 8;
     static float bigRange = 12;
     float unitRange;
-    Collider[] enemyInRange;
+    public Collider[] enemyInRange;
     public GameObject _rangeIndicator;
 
     [Header("Interacting")]
     bool canShoot;
-    UnitInformation targetInfo;
+    public UnitInformation targetInfo;
     Vector3 cameraDirection = new Vector3(-0.5f, -0.7f, 0.5f);
     public Transform _cameraDirection;
     Transform cameraPos;
@@ -119,6 +119,11 @@ public class Fighting : WorldWorker
         hasGone = true;
         turnController.UpdateSelectedHealth(targetInfo);
         FinishFiring();
+    }
+    public void FireAiLazer()
+    {
+        DamageTargetUnit(unitInfo._shipType);
+        hasGone = true;
     }
     void DamageTargetUnit(int UnitTypeID)
     {
