@@ -37,13 +37,18 @@ public class AiTurn : WorldWorker
         for (int i = 0; i < _AiTeam.Count; i++)
         {
             Fighting Temp = GetFightingForFiring(_AiTeam[i]);
-            Temp.GetEnemiesInRange();
+            Temp.GetAiEnemiesInRange();
             Temp.targetInfo = Temp.enemyInRange[0].gameObject.GetComponent<UnitInformation>();
-            if (Temp.hasGone == false)
+            if (Temp.enemyInRange[0].gameObject.GetComponent<UnitInformation>() != null)
             {
-                Temp.FireAiLazer();
+                if (Temp.hasGone == false)
+                {
+                    Temp.FireAiLazer();
+                }
             }
+            Temp.ResetTargeting();
         }
+
         turnController.ChangeTurn();
     }
     Fighting GetFightingForFiring(UnitInformation currentUnitInfo)

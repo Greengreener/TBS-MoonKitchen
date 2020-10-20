@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class TurnController : MonoBehaviour
 {
+    public WorldWorker worldWorker;
     public int Turn { get; set; }
     Color red = Color.red;
     Color blue = Color.blue;
@@ -18,13 +19,27 @@ public class TurnController : MonoBehaviour
     public Image _selectedUnitHealthPanel;
     public Text _attackingUnitHealthText;
     public Text _selectedUnitHealthText;
+    public bool withAi;
+    [Header("Winning")]
+    public Text winText;
 
     void Start()
     {
-        Turn = Random.Range(0, 2);
-        print(Turn);
-        ChangeUiBasedOnTurn(Turn);
-        units = FindObjectsOfType<UnitInformation>();
+        //worldWorker = GetComponent<WorldWorker>();
+        if (!withAi)
+        {
+            Turn = Random.Range(0, 2);
+            print(Turn);
+            ChangeUiBasedOnTurn(Turn);
+            units = FindObjectsOfType<UnitInformation>();
+        }
+        else
+        {
+            Turn = 0;
+            ChangeUiBasedOnTurn(Turn);
+            units = FindObjectsOfType<UnitInformation>();
+        }
+        winText.gameObject.SetActive(false);
     }
     private void Update()
     {
@@ -102,5 +117,26 @@ public class TurnController : MonoBehaviour
         _attackingUnitHealthPanel.color = white + alphaIncrease;
         _selectedUnitHealthText.text = "";
         _selectedUnitHealthPanel.color = white + alphaIncrease;
+    }
+    void LateUpdate()
+    {
+        TeamUnitCheck();
+    }
+
+    void TeamUnitCheck()
+    {
+        if (worldWorker.redTeamAmount <= 0)
+        {
+            Win("Blue");
+        }
+        if (worldWorker.blueTeamAmount <= 0)
+        {
+            Win("Red");
+        }
+    }
+    void Win(string Team)
+    {
+        winText.text = Team + " Won";
+        winText.gameObject.SetActive(true);
     }
 }

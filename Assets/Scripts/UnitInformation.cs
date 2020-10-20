@@ -50,6 +50,17 @@ public class UnitInformation : WorldWorker
         {
             Debug.LogError(health);
         }
+        #region teamUnitCounting
+        switch (_team)
+        {
+            case "Red":
+                redTeamAmount++;
+                break;
+            case "Blue":
+                blueTeamAmount++;
+                break;
+        }
+        #endregion
         Health = health;
         meshRenderer = GetComponent<MeshRenderer>();
         MeshMatColorChange();
@@ -163,6 +174,15 @@ public class UnitInformation : WorldWorker
     {
         if (health <= 0)
         {
+            switch (_team)
+            {
+                case "Red":
+                    redTeamAmount--;
+                    break;
+                case "Blue":
+                    blueTeamAmount--;
+                    break;
+            }
             gameObject.SetActive(false);
         }
     }

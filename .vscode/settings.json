@@ -14,8 +14,8 @@
     //*File Explorer
     "explorer.sortOrder": "modified",
     //*Cursor
-    "editor.cursorStyle": "underline-thin",
-    "editor.cursorBlinking": "smooth",
+    "editor.cursorStyle": "line-thin",
+    "editor.cursorBlinking": "expand",
     //*Intellisense
     "editor.acceptSuggestionOnEnter": "smart",
     //*Synthwave '84 Theme Settings

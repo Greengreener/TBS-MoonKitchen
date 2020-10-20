@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WorldWorker : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class WorldWorker : MonoBehaviour
     protected GameObject selectingMaster;
     protected NewSelectingUnit selectingUnits;
     protected Camera mainCamera;
+    public int redTeamAmount;
+    public int blueTeamAmount;
 
     void Start()
     {
@@ -19,7 +22,9 @@ public class WorldWorker : MonoBehaviour
         selectingUnits = selectingMaster.GetComponent<NewSelectingUnit>();
         mainCamera = Camera.main;
         #endregion
+
     }
+
     #region CheeseRegion
     bool cheese;
     private void Cheese()

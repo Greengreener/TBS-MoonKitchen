@@ -120,10 +120,18 @@ public class Fighting : WorldWorker
         turnController.UpdateSelectedHealth(targetInfo);
         FinishFiring();
     }
+    public void GetAiEnemiesInRange()
+    {
+        selfCollider.enabled = false;
+        enemyInRange = Physics.OverlapSphere(gameObject.transform.position, unitRange);
+    }
     public void FireAiLazer()
     {
-        DamageTargetUnit(unitInfo._shipType);
-        hasGone = true;
+        if (targetInfo._team != unitInfo._team)
+        {
+            DamageTargetUnit(unitInfo._shipType);
+            hasGone = true;
+        }
     }
     void DamageTargetUnit(int UnitTypeID)
     {
