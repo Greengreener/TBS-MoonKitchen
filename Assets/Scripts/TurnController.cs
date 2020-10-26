@@ -25,6 +25,7 @@ public class TurnController : MonoBehaviour
 
     void Start()
     {
+        print("ping1");
         //worldWorker = GetComponent<WorldWorker>();
         if (!withAi)
         {
@@ -127,15 +128,18 @@ public class TurnController : MonoBehaviour
     {
         if (worldWorker.redTeamAmount <= 0)
         {
+            print("worldWorker.redTeamAmount " + worldWorker.redTeamAmount);
             Win("Blue");
         }
         if (worldWorker.blueTeamAmount <= 0)
         {
+            print("worldWorker.blueTeamAmount " + worldWorker.blueTeamAmount);
             Win("Red");
         }
     }
     void Win(string Team)
     {
+        print("ping2");
         winText.text = Team + " Won";
         winText.gameObject.SetActive(true);
     }

@@ -24,7 +24,20 @@ public class WorldWorker : MonoBehaviour
         #endregion
 
     }
-
+    public void UnitAmountAdd(string team)
+    {
+        switch (team)
+        {
+            case "Red":
+                redTeamAmount++;
+                print("redTeamAmount added");
+                break;
+            case "Blue":
+                blueTeamAmount++;
+                print("blueTeamAmount added");
+                break;
+        }
+    }
     #region CheeseRegion
     bool cheese;
     private void Cheese()

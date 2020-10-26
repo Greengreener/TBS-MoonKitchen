@@ -30,7 +30,7 @@ public class UnitInformation : WorldWorker
     public Mesh _bigShip;
 
     #endregion
-    void Start()
+    void Awake()
     {
         #region SetSpecial
         turnController = FindObjectOfType<TurnController>();
@@ -51,15 +51,7 @@ public class UnitInformation : WorldWorker
             Debug.LogError(health);
         }
         #region teamUnitCounting
-        switch (_team)
-        {
-            case "Red":
-                redTeamAmount++;
-                break;
-            case "Blue":
-                blueTeamAmount++;
-                break;
-        }
+        UnitAmountAdd(_team);
         #endregion
         Health = health;
         meshRenderer = GetComponent<MeshRenderer>();
@@ -126,7 +118,7 @@ public class UnitInformation : WorldWorker
         }
 #endif
     }
-    void Update()
+    void LateUpdate()
     {
         UpdateHealth();
         DeathCheck();
