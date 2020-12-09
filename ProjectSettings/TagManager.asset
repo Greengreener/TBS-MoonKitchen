@@ -8,8 +8,6 @@ TagManager:
   - TurnController
   - SmallMeshHolder
   - UnitCanvas
-  - Tile
-  - NPC
   layers:
   - Default
   - TransparentFX
