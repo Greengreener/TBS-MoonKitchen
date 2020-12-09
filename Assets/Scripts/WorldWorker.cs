@@ -10,8 +10,8 @@ public class WorldWorker : MonoBehaviour
     protected GameObject selectingMaster;
     protected NewSelectingUnit selectingUnits;
     protected Camera mainCamera;
-    public int redTeamAmount;
-    public int blueTeamAmount;
+    public int redTeamAmount = 1;
+    public int blueTeamAmount = 1;
 
     void Start()
     {

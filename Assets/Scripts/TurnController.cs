@@ -121,17 +121,17 @@ public class TurnController : MonoBehaviour
     }
     void LateUpdate()
     {
-        TeamUnitCheck();
+        //TeamUnitCheck();
     }
 
     void TeamUnitCheck()
     {
-        if (worldWorker.redTeamAmount <= 0)
+        if (worldWorker.redTeamAmount == 0)
         {
             print("worldWorker.redTeamAmount " + worldWorker.redTeamAmount);
             Win("Blue");
         }
-        if (worldWorker.blueTeamAmount <= 0)
+        if (worldWorker.blueTeamAmount == 0)
         {
             print("worldWorker.blueTeamAmount " + worldWorker.blueTeamAmount);
             Win("Red");

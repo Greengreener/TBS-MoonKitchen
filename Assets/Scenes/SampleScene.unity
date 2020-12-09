@@ -1740,8 +1740,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1338855267}
   - component: {fileID: 1338855266}
-  - component: {fileID: 1338855268}
   - component: {fileID: 1338855269}
+  - component: {fileID: 1338855268}
   m_Layer: 0
   m_Name: SelectingMaster
   m_TagString: SelectingMaster
